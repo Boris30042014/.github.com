@@ -1,0 +1,365 @@
+﻿¤๋ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ͜͡, [28.09.2025 8:16]
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор имен онлайн | Случайные имена для персонажей</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            padding: 20px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        h1 {
+            color: #2D3047;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        
+        #nameDisplay {
+            font-size: 2.8em;
+            margin: 30px 0;
+            color: #E76F51;
+            min-height: 120px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            flex-direction: column;
+        }
+        
+        .controls {
+            margin: 30px 0;
+        }
+        
+        .category-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .cat-btn {
+            padding: 12px 24px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .cat-btn.active {
+            background: #5F6CAF;
+            color: white;
+            border-color: #5F6CAF;
+            transform: scale(1.05);
+        }
+        
+        .action-buttons {
+            margin-top: 20px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #5F6CAF, #3f4f9f);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(95, 108, 175, 0.4);
+            margin: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(95, 108, 175, 0.6);
+        }
+        
+        button:active {
+            transform: translateY(-1px);
+        }
+        
+        .name-item {
+            margin: 10px 0;
+            animation-duration: 0.6s;
+            animation-fill-mode: both;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation-name: fadeIn;
+        }
+        
+        .floating-shapes {
+            position: fixed;
+
+¤๋ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ͜͡, [28.09.2025 8:16]
+top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-1000px) rotate(360deg); }
+        }
+        
+        .history {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .history-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shapes" id="floatingShapes"></div>
+    
+    <div class="container">
+        <h1><i class="fas fa-magic"></i> Генератор имен онлайн</h1>
+        <p class="subtitle">Случайные имена для персонажей, игр и творчества</p>
+        
+        <div class="controls">
+            <div class="category-buttons">
+                <div class="cat-btn active" data-category="russian">🇷🇺 Русские</div>
+                <div class="cat-btn" data-category="english">🇺🇸 Английские</div>
+                <div class="cat-btn" data-category="fantasy">🧙 Фэнтези</div>
+                <div class="cat-btn" data-category="japanese">🇯🇵 Японские</div>
+            </div>
+        </div>
+        
+        <div id="nameDisplay">
+            <span style="color: #ccc; font-size: 0.8em;">Нажмите кнопку для генерации</span>
+        </div>
+        
+        <div class="action-buttons">
+            <button onclick="generateName()">
+                <i class="fas fa-random"></i> Сгенерировать имя
+            </button>
+            <button onclick="generateMultiple()">
+                <i class="fas fa-bolt"></i> 5 имен сразу
+            </button>
+            <button onclick="clearHistory()" style="background: linear-gradient(135deg, #E76F51, #d35400);">
+                <i class="fas fa-trash"></i> Очистить
+            </button>
+        </div>
+        
+        <div class="history">
+            <div class="history-title">История имен:</div>
+            <div id="historyList"></div>
+        </div>
+    </div>
+
+    <script>
+        const nameDatabase = {
+            russian: {
+                male: ["Александр", "Максим", "Дмитрий", "Иван", "Артем", "Михаил", "Кирилл", "Даниил", "Андрей", "Сергей"],
+                female: ["София", "Мария", "Анна", "Алиса", "Виктория", "Екатерина", "Анастасия", "Дарья", "Елена", "Ольга"]
+            },
+            english: {
+                male: ["James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph", "Thomas", "Charles"],
+                female: ["Mary", "Patricia", "Jennifer", "Linda", "Elizabeth", "Barbara", "Susan", "Jessica", "Sarah", "Karen"]
+            },
+            fantasy: {
+                male: ["Арагорн", "Леголас", "Гендальф", "Тирион", "Кел'Тузед", "Гаррош", "Трал", "Артас", "Иллидан", "Кейден"],
+                female: ["Арвен", "Галадриэль", "Дейенерис", "Игринет", "Морриган", "Сильвана", "Джайна", "Лианна", "Серсея", "Иветт"]
+            },
+            japanese: {
+                male: ["Харуки", "Рюносукэ", "Кайто", "Рен", "Акира", "Хикару", "Такэси", "Кенджи", "Юто", "Шои"],
+                female: ["Сакура", "Хина", "Юки", "Аои", "Рин", "Мэй", "Нанами", "Юи", "Акари", "Химэко"]
+            }
+        };
+
+        let currentCategory = 'russian';
+        let nameHistory = [];
+
+        function initPage() {
+            createFloatingShapes();
+            setupCategoryButtons();
+            loadHistory();
+            generateName();
+        }
+
+¤๋ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ͜͡, [28.09.2025 8:16]
+function createFloatingShapes() {
+            const container = document.getElementById('floatingShapes');
+            const colors = ['#FF6B6B', '#5F6CAF', '#E76F51', '#4ECDC4', '#C44569'];
+            
+            for (let i = 0; i < 20; i++) {
+                const shape = document.createElement('div');
+                shape.classList.add('shape');
+                
+                const size = Math.random() * 80 + 20;
+                const left = Math.random() * 100;
+                const delay = Math.random() * 20;
+                const duration = Math.random() * 30 + 20;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                shape.style.width = ${size}px;
+                shape.style.height = ${size}px;
+                shape.style.left = ${left}%;
+                shape.style.top = 100%;
+                shape.style.background = color;
+                shape.style.animationDelay = ${delay}s;
+                shape.style.animationDuration = ${duration}s;
+                
+                if (Math.random() > 0.5) {
+                    shape.style.borderRadius = '50%';
+                }
+                
+                container.appendChild(shape);
+            }
+        }
+
+        function setupCategoryButtons() {
+            const buttons = document.querySelectorAll('.cat-btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    buttons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentCategory = this.getAttribute('data-category');
+                    generateName();
+                });
+            });
+        }
+
+        function generateName() {
+            const gender = Math.random() > 0.5 ? 'male' : 'female';
+            const nameList = nameDatabase[currentCategory][gender];
+            const randomName = nameList[Math.floor(Math.random() * nameList.length)];
+            
+            displayName(randomName);
+            addToHistory(randomName);
+        }
+
+        function generateMultiple() {
+            let names = [];
+            for (let i = 0; i < 5; i++) {
+                const gender = Math.random() > 0.5 ? 'male' : 'female';
+                const nameList = nameDatabase[currentCategory][gender];
+                const randomName = nameList[Math.floor(Math.random() * nameList.length)];
+                names.push(randomName);
+            }
+            
+            displayMultipleNames(names);
+            names.forEach(name => addToHistory(name));
+        }
+
+        function displayName(name) {
+            const nameElement = document.getElementById('nameDisplay');
+            nameElement.innerHTML = <div class="name-item fade-in">${name}</div>;
+        }
+
+        function displayMultipleNames(names) {
+            const nameElement = document.getElementById('nameDisplay');
+            let html = '';
+            names.forEach((name, index) => {
+                html += <div class="name-item fade-in" style="animation-delay: ${index * 0.1}s">${name}</div>;
+            });
+            nameElement.innerHTML = html;
+        }
+
+        function addToHistory(name) {
+            nameHistory.unshift(name);
+            if (nameHistory.length > 10) {
+                nameHistory = nameHistory.slice(0, 10);
+            }
+            saveHistory();
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = nameHistory.map(name => 
+                <div style="margin: 5px 0; color: #666;">${name}</div>
+            ).join('');
+        }
+
+        function saveHistory() {
+            localStorage.setItem('nameHistory', JSON.stringify(nameHistory));
+        }
+
+¤๋ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ͜͡, [28.09.2025 8:16]
+function loadHistory() {
+            const saved = localStorage.getItem('nameHistory');
+            if (saved) {
+                nameHistory = JSON.parse(saved);
+                updateHistoryDisplay();
+            }
+        }
+
+        function clearHistory() {
+            nameHistory = [];
+            saveHistory();
+            updateHistoryDisplay();
+        }
+
+        window.onload = initPage;
+    </script>
+</body>
+</html>
